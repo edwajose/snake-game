@@ -50,6 +50,7 @@ while run:
             run = False
 
     snake.draw_snake()
+    fruit.draw_fruit()
     pygame.display.update()
     clock.tick(60)
 
