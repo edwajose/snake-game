@@ -1,5 +1,18 @@
 import pygame, random
+from pygame import Vector2
 
+class SNAKE:
+    def __init__(self):
+        self.body = [Vector2(5,10), Vector2(6,10), Vector2(7,10)]   # Snake's body is three blocks long
+        self.screen = screen
+    
+    def draw_snake(self):
+        for block in self.body:
+            block_x = int(block.x * cell_size)
+            block_y = int(block.y * cell_size)
+            rect = pygame.Rect(block_x, block_y, cell_size, cell_size)
+            pygame.draw.rect(screen, (250, 250, 250), rect)
+            
 pygame.init()
 
 cell_size = 30
@@ -13,6 +26,8 @@ clock = pygame.time.Clock()
 
 player = pygame.Rect((300,250,25,25))
 
+snake = SNAKE()
+
 
 run = True
 
@@ -20,22 +35,11 @@ while run:
 
     screen.fill((0,0,0))
 
-    pygame.draw.rect(screen, (255,0,0), player)
-
-    key = pygame.key.get_pressed()
-    if key[pygame.K_a] == True:
-        player.move_ip(-5,0)
-    elif key[pygame.K_d] == True:
-        player.move_ip(5,0)
-    elif key[pygame.K_w] == True:
-        player.move_ip(0,-5)
-    elif key[pygame.K_s] == True:
-        player.move_ip(0,5)
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
+    snake.draw_snake()
     pygame.display.update()
     clock.tick(60)
 
