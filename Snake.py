@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, sys
 from pygame import Vector2
 
 class SNAKE:
@@ -44,6 +44,15 @@ class MAIN:                                                            # Contain
         self.fruit.draw_fruit()
         
 
+    def draw_score(self):
+        score_text = "sample pause"
+        score_surface = game_font.render(score_text,True,(0,0,0))
+        score_x = int(cell_size*cell_number - 80)
+        score_y = int(cell_size*cell_number - 80)
+        score_rect = score_surface.get_rect(center = (score_x,score_y))
+        screen.blit(score_surface, score_rect)
+        
+
 pygame.init()
 
 cell_size = 30
@@ -55,19 +64,22 @@ clock = pygame.time.Clock()
 
 main_game = MAIN()
 
+game_font = pygame.font.SysFont("Arial", 25)
 
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE,150)
 
-run = True
 
-while run:
+pause = False
+
+while True:
 
     screen.fill((0,0,0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            pygame.quit()
+            sys.exit()
         if event.type == SCREEN_UPDATE:
             main_game.update()
         if event.type == pygame.KEYDOWN:
@@ -79,10 +91,30 @@ while run:
                 main_game.snake.direction = Vector2(1,0)
             if event.key == pygame.K_LEFT:
                 main_game.snake.direction = Vector2(-1,0)
+            if event.key == pygame.K_p:
+                pause = True
+                screen.fill((0,200,0))
+                main_game.draw_score()
+                pygame.display.update()
+
+    while pause:
+        
+        
+
+        
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    pause = False
+
+        clock.tick(60) 
+
 
     main_game.draw_objects()
     pygame.display.update()
     clock.tick(60)                          # Limits the game to 60 frames per second
 
-
-pygame.quit()
