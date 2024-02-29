@@ -63,6 +63,9 @@ class MAIN:                                                            # Contain
             # Eat the fruit and lengthen the snake
             self.fruit.randomize()
             self.snake.lengthen()
+        for block in self.snake.body:
+            if self.fruit.pos == block:
+                self.fruit.randomize()
     
     def death_check(self):
         # Check if the snake is outside the screen or hitting itself
