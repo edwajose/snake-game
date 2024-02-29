@@ -70,6 +70,9 @@ class MAIN:                                                            # Contain
             self.game_over()
         if self.snake.body[0].y < 0 or self.snake.body[0].y >= cell_number:
             self.game_over()
+        for block in self.snake.body[1:]:
+            if block == self.snake.body[0]:
+                self.game_over()
     
     def game_over(self):
         pygame.quit()
@@ -115,13 +118,17 @@ while True:
             main_game.update()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                main_game.snake.direction = Vector2(0,-1)
+                if main_game.snake.direction.y != 1:
+                    main_game.snake.direction = Vector2(0,-1)
             if event.key == pygame.K_DOWN:
-                main_game.snake.direction = Vector2(0,1)
+                if main_game.snake.direction.y != -1:
+                    main_game.snake.direction = Vector2(0,1)
             if event.key == pygame.K_RIGHT:
-                main_game.snake.direction = Vector2(1,0)
+                if main_game.snake.direction.x != -1:
+                    main_game.snake.direction = Vector2(1,0)
             if event.key == pygame.K_LEFT:
-                main_game.snake.direction = Vector2(-1,0)
+                if main_game.snake.direction.x != 1:
+                    main_game.snake.direction = Vector2(-1,0)
             if event.key == pygame.K_p:
                 pause = True
                 screen.fill((0,200,0))
