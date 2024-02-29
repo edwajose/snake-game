@@ -5,6 +5,7 @@ class SNAKE:
     def __init__(self):
         self.body = [Vector2(7,10), Vector2(6,10), Vector2(5,10)]       # Snake's body is three blocks long
         self.direction = Vector2(1,0)
+        self.new_block = False
     
     def draw_snake(self):                                               # Every vector becomes a white block on the grid
         for block in self.body:
@@ -14,9 +15,18 @@ class SNAKE:
             pygame.draw.rect(screen, (250, 250, 250), rect)
     
     def move_snake(self):                                               # Make the snake move
-        body_copy = self.body[:-1]
-        body_copy.insert(0,body_copy[0] + self.direction)
-        self.body=body_copy[:]
+        if self.new_block:
+            body_copy = self.body[:]
+            body_copy.insert(0,body_copy[0] + self.direction)
+            self.body = body_copy[:]
+            self.new_block = False
+        else:
+            body_copy = self.body[:-1]
+            body_copy.insert(0,body_copy[0] + self.direction)
+            self.body = body_copy[:]
+    
+    def lengthen(self):
+        self.new_block = True
 
 
 class FRUIT:                                                            # The fruit has a random position on the grid
@@ -51,6 +61,7 @@ class MAIN:                                                            # Contain
         if self.fruit.pos == self.snake.body[0]:
             # Eat the fruit and lengthen the snake
             self.fruit.randomize()
+            self.snake.lengthen()
 
     def draw_score(self):
         score_text = "sample pause"
