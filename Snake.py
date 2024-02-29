@@ -51,17 +51,29 @@ class MAIN:                                                            # Contain
     
     def update(self):
         self.snake.move_snake()
-        self.collision_check()
+        self.eat_check()
+        self.death_check()
     
     def draw_objects(self):
         self.snake.draw_snake()
         self.fruit.draw_fruit()
     
-    def collision_check(self):
+    def eat_check(self):
         if self.fruit.pos == self.snake.body[0]:
             # Eat the fruit and lengthen the snake
             self.fruit.randomize()
             self.snake.lengthen()
+    
+    def death_check(self):
+        # Check if the snake is outside the screen or hitting itself
+        if self.snake.body[0].x < 0 or self.snake.body[0].x >= cell_number:
+            self.game_over()
+        if self.snake.body[0].y < 0 or self.snake.body[0].y >= cell_number:
+            self.game_over()
+    
+    def game_over(self):
+        pygame.quit()
+        sys.exit()
 
     def draw_score(self):
         score_text = "sample pause"
