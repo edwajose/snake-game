@@ -3,7 +3,7 @@ from pygame import Vector2
 
 class SNAKE:
     def __init__(self):
-        self.body = [Vector2(5,10), Vector2(6,10), Vector2(7,10)]       # Snake's body is three blocks long
+        self.body = [Vector2(7,10), Vector2(6,10), Vector2(5,10)]       # Snake's body is three blocks long
         self.direction = Vector2(1,0)
     
     def draw_snake(self):                                               # Every vector becomes a white block on the grid
@@ -21,15 +21,18 @@ class SNAKE:
 
 class FRUIT:                                                            # The fruit has a random position on the grid
     def __init__(self):
-        self.x = random.randint(0,cell_number - 1)
-        self.y = random.randint(0,cell_number - 1)
-        self.pos = Vector2(self.x,self.y)
+        self.randomize()
 
     def draw_fruit(self):                                              # The fruit becomes a red block on the grid
         fruit_x = int(self.pos.x * cell_size)
         fruit_y = int(self.pos.y * cell_size)
         fruit_rect = pygame.Rect(fruit_x, fruit_y, cell_size, cell_size)
         pygame.draw.rect(screen,(206,0,0),fruit_rect)
+    
+    def randomize(self):
+        self.x = random.randint(0,cell_number - 1)
+        self.y = random.randint(0,cell_number - 1)
+        self.pos = Vector2(self.x,self.y)
 
 class MAIN:                                                            # Contains the main game logic
     def __init__(self):
@@ -38,11 +41,16 @@ class MAIN:                                                            # Contain
     
     def update(self):
         self.snake.move_snake()
+        self.collision_check()
     
     def draw_objects(self):
         self.snake.draw_snake()
         self.fruit.draw_fruit()
-        
+    
+    def collision_check(self):
+        if self.fruit.pos == self.snake.body[0]:
+            # Eat the fruit and lengthen the snake
+            self.fruit.randomize()
 
     def draw_score(self):
         score_text = "sample pause"
